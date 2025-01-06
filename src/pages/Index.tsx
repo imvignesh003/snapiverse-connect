@@ -137,7 +137,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <Header currentZone={selectedZone} onZoneSwitch={setSelectedZone} />
       <ZoneSelector onZoneSelect={setSelectedZone} />
       <main className="container mx-auto px-4 pt-24 pb-8 max-w-[600px]">
         {selectedZone ? (
