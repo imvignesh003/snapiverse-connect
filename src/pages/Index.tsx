@@ -5,7 +5,6 @@ import { ZoneSelector, type Zone } from "@/components/ZoneSelector";
 import { classifyContent } from "@/utils/contentClassifier";
 import { useToast } from "@/components/ui/use-toast";
 
-// Extended post type with zone information
 interface PostData {
   id: number;
   username: string;
@@ -19,28 +18,84 @@ interface PostData {
 const POSTS: PostData[] = [
   {
     id: 1,
-    username: "john_doe",
+    username: "tech_enthusiast",
     userImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=500&h=500&fit=crop",
     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=800&fit=crop",
-    likes: 123,
-    caption: "Coding day! 💻 #programming #developer",
+    likes: 1234,
+    caption: "Just finished implementing a new feature! 💻 #coding #productivity #developer",
   },
   {
     id: 2,
-    username: "jane_smith",
+    username: "workspace_goals",
     userImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&h=500&fit=crop",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=800&fit=crop",
-    likes: 456,
-    caption: "Another day at the office 🚀 #tech #work",
+    likes: 892,
+    caption: "My productive workspace setup. Standing desk + ergonomic chair = productivity boost! 🚀 #workspace #productivity",
   },
   {
     id: 3,
-    username: "tech_enthusiast",
+    username: "study_with_me",
     userImage: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=500&h=500&fit=crop",
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=800&fit=crop",
-    likes: 789,
-    caption: "Setup of the day ⚡️ #setup #workspace",
+    likes: 567,
+    caption: "Study session in progress 📚 Making progress on my thesis! #study #academic #focus",
   },
+  {
+    id: 4,
+    username: "gaming_master",
+    userImage: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=500&h=500&fit=crop",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&h=800&fit=crop",
+    likes: 2341,
+    caption: "Epic gaming session! 🎮 Just reached max level! #gaming #fun #entertainment",
+  },
+  {
+    id: 5,
+    username: "movie_buff",
+    userImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=500&fit=crop",
+    image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=800&fit=crop",
+    likes: 1567,
+    caption: "Movie night! 🍿 This film was absolutely amazing! #movies #entertainment #weekend",
+  },
+  {
+    id: 6,
+    username: "book_worm",
+    userImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&h=500&fit=crop",
+    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&h=800&fit=crop",
+    likes: 789,
+    caption: "Reading this fascinating book on productivity techniques! 📖 #reading #selfimprovement #productivity",
+  },
+  {
+    id: 7,
+    username: "fitness_freak",
+    userImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=500&fit=crop",
+    image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&h=800&fit=crop",
+    likes: 1432,
+    caption: "Morning workout complete! 💪 Starting the day right! #fitness #health #discipline",
+  },
+  {
+    id: 8,
+    username: "party_people",
+    userImage: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&h=500&fit=crop",
+    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=800&fit=crop",
+    likes: 2789,
+    caption: "Best party ever! 🎉 Dancing all night long! #party #fun #weekend #entertainment",
+  },
+  {
+    id: 9,
+    username: "code_ninja",
+    userImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop",
+    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=800&fit=crop",
+    likes: 945,
+    caption: "Deep in the code! 🖥️ Building something amazing! #programming #focus #productivity",
+  },
+  {
+    id: 10,
+    username: "music_lover",
+    userImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=500&fit=crop",
+    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&h=800&fit=crop",
+    likes: 1876,
+    caption: "Vibing to my favorite playlist! 🎵 Music makes everything better! #music #relax #entertainment",
+  }
 ];
 
 const Index = () => {
