@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Post } from "@/components/Post";
 import { ZoneSelector, type Zone } from "@/components/ZoneSelector";
-import { classifyContent } from "@/utils/contentClassifier";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface PostData {
   id: string;
@@ -50,21 +49,26 @@ const Index = () => {
   const [selectedZone, setSelectedZone] = useState<Zone | null>(null);
   const [filteredPosts, setFilteredPosts] = useState<PostData[]>([]);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
+  // Enhanced query with proper caching
   const { data: posts, isLoading } = useQuery({
     queryKey: ['posts'],
     queryFn: fetchPosts,
+    staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
+    cacheTime: 10 * 60 * 1000, // Keep unused data in cache for 10 minutes
   });
 
+  // Real-time updates with cache integration
   useEffect(() => {
     const channel = supabase
       .channel('posts-changes')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'posts' },
-        () => {
-          // Refetch posts when changes occur
-          window.location.reload();
+        (payload) => {
+          // Invalidate and refetch cache when data changes
+          queryClient.invalidateQueries({ queryKey: ['posts'] });
         }
       )
       .subscribe();
@@ -72,7 +76,7 @@ const Index = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [queryClient]);
 
   useEffect(() => {
     if (!posts || !selectedZone) {
