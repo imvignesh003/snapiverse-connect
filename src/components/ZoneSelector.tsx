@@ -27,8 +27,8 @@ export const ZoneSelector = ({ onZoneSelect }: ZoneSelectorProps) => {
   const handleTimerEnd = () => {
     if (selectedZone) {
       const newZone = selectedZone === "productivity" ? "entertainment" : "productivity";
-      onZoneSelect(newZone);
-      setOpen(false);
+      setOpen(true);
+      setSelectedZone(newZone);
     }
   };
 

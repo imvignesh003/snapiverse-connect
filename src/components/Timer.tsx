@@ -7,9 +7,10 @@ import { useToast } from "@/components/ui/use-toast";
 interface TimerProps {
   onTimerEnd: () => void;
   onTimeSet: (minutes: number) => void;
+  isVisible?: boolean;
 }
 
-export const Timer = ({ onTimerEnd, onTimeSet }: TimerProps) => {
+export const Timer = ({ onTimerEnd, onTimeSet, isVisible = true }: TimerProps) => {
   const [minutes, setMinutes] = useState<number>(25);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const { toast } = useToast();
@@ -51,6 +52,14 @@ export const Timer = ({ onTimerEnd, onTimeSet }: TimerProps) => {
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
+
+  if (!isVisible) {
+    return timeLeft !== null ? (
+      <div className="font-mono text-lg">
+        {formatTime(timeLeft)}
+      </div>
+    ) : null;
+  }
 
   return (
     <div className="flex flex-col gap-4">

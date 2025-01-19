@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Zone } from "@/components/ZoneSelector";
+import { Timer } from "@/components/Timer";
 
 interface HeaderProps {
   currentZone?: Zone | null;
@@ -33,15 +34,18 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
         
         <div className="flex items-center gap-6">
           {currentZone && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleZoneSwitch}
-              className="flex items-center gap-2"
-            >
-              <Repeat className="w-4 h-4" />
-              Switch to {currentZone === 'productivity' ? 'Entertainment' : 'Productivity'}
-            </Button>
+            <div className="flex items-center gap-4">
+              <Timer onTimerEnd={handleZoneSwitch} onTimeSet={() => {}} isVisible={false} />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleZoneSwitch}
+                className="flex items-center gap-2"
+              >
+                <Repeat className="w-4 h-4" />
+                Switch to {currentZone === 'productivity' ? 'Entertainment' : 'Productivity'}
+              </Button>
+            </div>
           )}
           
           <nav className="flex items-center space-x-6">
