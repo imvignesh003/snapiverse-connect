@@ -35,7 +35,9 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
         <div className="flex items-center gap-6">
           {currentZone && (
             <div className="flex items-center gap-4">
-              <Timer onTimerEnd={handleZoneSwitch} onTimeSet={() => {}} isVisible={false} />
+              <div className="flex items-center gap-2 min-w-[100px]">
+                <Timer onTimerEnd={handleZoneSwitch} onTimeSet={() => {}} isVisible={false} />
+              </div>
               <Button
                 variant="outline"
                 size="sm"
