@@ -12,6 +12,7 @@ interface TimerProps {
 
 export const Timer = ({ onTimerEnd, onTimeSet, isVisible = true }: TimerProps) => {
   const [minutes, setMinutes] = useState<number>(25);
+  const [seconds, setSeconds] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const { toast } = useToast();
 
@@ -35,15 +36,26 @@ export const Timer = ({ onTimerEnd, onTimeSet, isVisible = true }: TimerProps) =
   }, [timeLeft, onTimerEnd, toast]);
 
   const handleStartTimer = () => {
-    if (minutes <= 0) {
+    if (minutes < 0 || seconds < 0 || seconds >= 60) {
       toast({
         title: "Invalid time",
-        description: "Please enter a positive number of minutes.",
+        description: "Please enter valid minutes and seconds (0-59).",
         variant: "destructive",
       });
       return;
     }
-    setTimeLeft(minutes * 60);
+
+    if (minutes === 0 && seconds === 0) {
+      toast({
+        title: "Invalid time",
+        description: "Please enter a positive duration.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const totalSeconds = minutes * 60 + seconds;
+    setTimeLeft(totalSeconds);
     onTimeSet(minutes);
   };
 
@@ -65,14 +77,26 @@ export const Timer = ({ onTimerEnd, onTimeSet, isVisible = true }: TimerProps) =
     <div className="flex flex-col gap-4">
       {timeLeft === null ? (
         <div className="flex gap-2">
-          <Input
-            type="number"
-            value={minutes}
-            onChange={(e) => setMinutes(Number(e.target.value))}
-            placeholder="Minutes"
-            min="1"
-            className="w-24"
-          />
+          <div className="flex items-center gap-2">
+            <Input
+              type="number"
+              value={minutes}
+              onChange={(e) => setMinutes(Number(e.target.value))}
+              placeholder="Min"
+              min="0"
+              className="w-20"
+            />
+            <span>:</span>
+            <Input
+              type="number"
+              value={seconds}
+              onChange={(e) => setSeconds(Number(e.target.value))}
+              placeholder="Sec"
+              min="0"
+              max="59"
+              className="w-20"
+            />
+          </div>
           <Button onClick={handleStartTimer} className="flex items-center gap-2">
             <Clock className="w-4 h-4" />
             Start Timer
