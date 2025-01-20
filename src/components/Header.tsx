@@ -18,11 +18,6 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
     
     const newZone = currentZone === 'productivity' ? 'entertainment' : 'productivity';
     onZoneSwitch(newZone);
-    
-    toast({
-      title: `Switched to ${newZone.charAt(0).toUpperCase() + newZone.slice(1)} Zone`,
-      description: "Your feed will be updated accordingly.",
-    });
   };
 
   return (
@@ -37,7 +32,12 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <div className="font-mono text-lg min-w-[80px] text-center">
-                  <Timer onTimerEnd={handleZoneSwitch} onTimeSet={() => {}} isVisible={true} />
+                  <Timer 
+                    onTimerEnd={handleZoneSwitch} 
+                    onTimeSet={() => {}} 
+                    isVisible={true}
+                    resetOnZoneSwitch={true}
+                  />
                 </div>
               </div>
               <Button

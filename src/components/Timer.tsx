@@ -8,13 +8,20 @@ interface TimerProps {
   onTimerEnd: () => void;
   onTimeSet: (minutes: number) => void;
   isVisible?: boolean;
+  resetOnZoneSwitch?: boolean;
 }
 
-export const Timer = ({ onTimerEnd, onTimeSet, isVisible = true }: TimerProps) => {
+export const Timer = ({ onTimerEnd, onTimeSet, isVisible = true, resetOnZoneSwitch = false }: TimerProps) => {
   const [minutes, setMinutes] = useState<number>(25);
   const [seconds, setSeconds] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (resetOnZoneSwitch) {
+      setTimeLeft(null);
+    }
+  }, [resetOnZoneSwitch]);
 
   useEffect(() => {
     if (timeLeft === null) return;
