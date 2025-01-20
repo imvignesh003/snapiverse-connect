@@ -37,7 +37,7 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <div className="font-mono text-lg min-w-[80px] text-center">
-                  <Timer onTimerEnd={handleZoneSwitch} onTimeSet={() => {}} isVisible={true} />
+                  <Timer onTimerEnd={handleZoneSwitch} onTimeSet={() => {}} isVisible={false} />
                 </div>
               </div>
               <Button
