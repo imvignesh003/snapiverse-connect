@@ -20,6 +20,8 @@ export const Timer = ({ onTimerEnd, onTimeSet, isVisible = true, resetOnZoneSwit
   useEffect(() => {
     if (resetOnZoneSwitch) {
       setTimeLeft(null);
+      setMinutes(25);
+      setSeconds(0);
     }
   }, [resetOnZoneSwitch]);
 
@@ -31,6 +33,7 @@ export const Timer = ({ onTimerEnd, onTimeSet, isVisible = true, resetOnZoneSwit
         title: "Time's up!",
         description: "Switching to the other zone.",
       });
+      setTimeLeft(null);
       onTimerEnd();
       return;
     }

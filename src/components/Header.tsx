@@ -20,6 +20,13 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
     onZoneSwitch(newZone);
   };
 
+  const handleTimeSet = (minutes: number) => {
+    toast({
+      title: `${currentZone?.charAt(0).toUpperCase() + currentZone?.slice(1)} Zone Timer Set`,
+      description: `Timer set for ${minutes} minutes.`,
+    });
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -34,7 +41,7 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
                 <div className="font-mono text-lg min-w-[80px] text-center">
                   <Timer 
                     onTimerEnd={handleZoneSwitch} 
-                    onTimeSet={() => {}} 
+                    onTimeSet={handleTimeSet}
                     isVisible={true}
                     resetOnZoneSwitch={true}
                   />
