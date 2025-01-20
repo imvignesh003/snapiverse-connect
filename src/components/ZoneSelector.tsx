@@ -70,7 +70,11 @@ export const ZoneSelector = ({ onZoneSelect }: ZoneSelectorProps) => {
               <div className="text-center text-lg font-medium">
                 Set timer for {selectedZone} zone
               </div>
-              <Timer onTimerEnd={handleTimerEnd} onTimeSet={handleTimeSet} />
+              <Timer 
+                onTimerEnd={handleTimerEnd} 
+                onTimeSet={handleTimeSet} 
+                showInput={true}
+              />
               <Button
                 variant="outline"
                 onClick={() => setSelectedZone(null)}
