@@ -122,7 +122,11 @@ export const Timer = ({
               Start Timer
             </Button>
           </div>
-        ) : null
+        ) : (
+          <Button onClick={handleStartTimer} size="sm">
+            Start Timer
+          </Button>
+        )
       ) : (
         <div className="font-mono text-lg font-bold text-center">
           {formatTime(timeLeft)}
