@@ -37,7 +37,7 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
         <div className="flex items-center gap-6">
           {currentZone && (
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 min-w-[80px] justify-center">
+              <div className="flex items-center gap-2 min-w-[80px] justify-center bg-gray-100 px-3 py-1 rounded">
                 <Timer 
                   onTimerEnd={handleZoneSwitch} 
                   onTimeSet={handleTimeSet}

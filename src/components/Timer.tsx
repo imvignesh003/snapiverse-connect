@@ -33,25 +33,29 @@ export const Timer = ({
   }, [resetOnZoneSwitch]);
 
   useEffect(() => {
-    if (timeLeft === null) return;
+    let timer: NodeJS.Timeout;
+    
+    if (timeLeft !== null) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev === null) return null;
+          if (prev <= 0) {
+            clearInterval(timer);
+            toast({
+              title: "Time's up!",
+              description: "Switching to the other zone.",
+            });
+            onTimerEnd();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
 
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev === null) return null;
-        if (prev <= 0) {
-          clearInterval(timer);
-          toast({
-            title: "Time's up!",
-            description: "Switching to the other zone.",
-          });
-          onTimerEnd();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
   }, [timeLeft, onTimerEnd, toast]);
 
   const handleStartTimer = () => {
@@ -120,7 +124,7 @@ export const Timer = ({
           </div>
         ) : null
       ) : (
-        <div className="font-mono text-lg font-bold">
+        <div className="font-mono text-lg font-bold text-center">
           {formatTime(timeLeft)}
         </div>
       )}
