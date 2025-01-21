@@ -35,18 +35,20 @@ export const Timer = ({
   useEffect(() => {
     if (timeLeft === null) return;
 
-    if (timeLeft === 0) {
-      toast({
-        title: "Time's up!",
-        description: "Switching to the other zone.",
-      });
-      setTimeLeft(null);
-      onTimerEnd();
-      return;
-    }
-
     const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev !== null ? prev - 1 : null));
+      setTimeLeft((prev) => {
+        if (prev === null) return null;
+        if (prev <= 0) {
+          clearInterval(timer);
+          toast({
+            title: "Time's up!",
+            description: "Switching to the other zone.",
+          });
+          onTimerEnd();
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
 
     return () => clearInterval(timer);
@@ -118,7 +120,7 @@ export const Timer = ({
           </div>
         ) : null
       ) : (
-        <div className="text-center font-mono text-2xl">
+        <div className="font-mono text-lg font-bold">
           {formatTime(timeLeft)}
         </div>
       )}
