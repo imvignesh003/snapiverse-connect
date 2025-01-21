@@ -95,38 +95,32 @@ export const Timer = ({
   return (
     <div className="flex flex-col gap-4">
       {timeLeft === null ? (
-        showInput ? (
-          <div className="flex gap-2">
-            <div className="flex items-center gap-2">
-              <Input
-                type="number"
-                value={minutes}
-                onChange={(e) => setMinutes(Number(e.target.value))}
-                placeholder="Min"
-                min="0"
-                className="w-20"
-              />
-              <span>:</span>
-              <Input
-                type="number"
-                value={seconds}
-                onChange={(e) => setSeconds(Number(e.target.value))}
-                placeholder="Sec"
-                min="0"
-                max="59"
-                className="w-20"
-              />
-            </div>
-            <Button onClick={handleStartTimer} className="flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              Start Timer
-            </Button>
+        <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <Input
+              type="number"
+              value={minutes}
+              onChange={(e) => setMinutes(Number(e.target.value))}
+              placeholder="Min"
+              min="0"
+              className="w-20"
+            />
+            <span>:</span>
+            <Input
+              type="number"
+              value={seconds}
+              onChange={(e) => setSeconds(Number(e.target.value))}
+              placeholder="Sec"
+              min="0"
+              max="59"
+              className="w-20"
+            />
           </div>
-        ) : (
-          <Button onClick={handleStartTimer} size="sm">
-            Start Timer
+          <Button onClick={handleStartTimer} className="flex items-center gap-2">
+            <Clock className="w-4 h-4" />
+            Start
           </Button>
-        )
+        </div>
       ) : (
         <div className="font-mono text-lg font-bold text-center">
           {formatTime(timeLeft)}
