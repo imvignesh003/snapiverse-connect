@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -27,8 +27,8 @@ export const ZoneSelector = ({ onZoneSelect }: ZoneSelectorProps) => {
   const handleTimerEnd = () => {
     if (selectedZone) {
       const newZone = selectedZone === "productivity" ? "entertainment" : "productivity";
-      setOpen(true);
       setSelectedZone(newZone);
+      onZoneSelect(newZone);
     }
   };
 

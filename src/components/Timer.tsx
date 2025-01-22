@@ -32,13 +32,13 @@ export const Timer = ({
   const { toast } = useToast();
 
   useEffect(() => {
-    if (resetOnZoneSwitch) {
+    if (resetOnZoneSwitch && timeLeft === 0) {
       setTimeLeft(null);
       setMinutes(25);
       setSeconds(0);
       setShowDialog(true);
     }
-  }, [resetOnZoneSwitch]);
+  }, [resetOnZoneSwitch, timeLeft]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
