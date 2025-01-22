@@ -29,6 +29,10 @@ export const ZoneSelector = ({ onZoneSelect }: ZoneSelectorProps) => {
       const newZone = selectedZone === "productivity" ? "entertainment" : "productivity";
       setSelectedZone(newZone);
       onZoneSelect(newZone);
+      toast({
+        title: `Switching to ${newZone.charAt(0).toUpperCase() + newZone.slice(1)} Zone`,
+        description: "Please set a new timer duration.",
+      });
     }
   };
 
