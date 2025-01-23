@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 
 interface TimerProps {
@@ -33,11 +34,12 @@ export const Timer = ({
   const [showDialog, setShowDialog] = useState(false);
   const { toast } = useToast();
 
+  // Only show dialog if explicitly requested via showInput prop
   useEffect(() => {
     if (showInput && timeLeft === null) {
       setShowDialog(true);
     }
-  }, [showInput, timeLeft]);
+  }, [showInput]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -112,6 +114,9 @@ export const Timer = ({
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Set Timer Duration</DialogTitle>
+            <DialogDescription>
+              Enter the duration for your current zone.
+            </DialogDescription>
           </DialogHeader>
           <div className="flex gap-2 p-4">
             <div className="flex items-center gap-2">
@@ -143,7 +148,11 @@ export const Timer = ({
       </Dialog>
       
       {timeLeft === null ? (
-        <Button onClick={() => setShowDialog(true)} size="sm">
+        <Button 
+          onClick={() => setShowDialog(true)} 
+          size="sm"
+          className="hidden" // Hide the Set Timer button since we're handling it automatically
+        >
           Set Timer
         </Button>
       ) : (

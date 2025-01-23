@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Timer } from "./Timer";
@@ -52,6 +53,9 @@ export const ZoneSelector = ({ onZoneSelect }: ZoneSelectorProps) => {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center">Choose Your Zone</DialogTitle>
+          <DialogDescription className="text-center">
+            Select your focus zone and set a timer for your session.
+          </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4 mt-4">
           {!selectedZone ? (
@@ -80,12 +84,6 @@ export const ZoneSelector = ({ onZoneSelect }: ZoneSelectorProps) => {
                 showInput={true}
                 resetOnZoneSwitch={true}
               />
-              <Button
-                variant="outline"
-                onClick={() => setSelectedZone(null)}
-              >
-                Back to Zone Selection
-              </Button>
             </div>
           )}
         </div>
