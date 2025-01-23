@@ -34,12 +34,11 @@ export const Timer = ({
   const [showDialog, setShowDialog] = useState(false);
   const { toast } = useToast();
 
-  // Only show dialog if explicitly requested via showInput prop
   useEffect(() => {
     if (showInput && timeLeft === null) {
       setShowDialog(true);
     }
-  }, [showInput]);
+  }, [showInput, timeLeft]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -151,7 +150,7 @@ export const Timer = ({
         <Button 
           onClick={() => setShowDialog(true)} 
           size="sm"
-          className="hidden" // Hide the Set Timer button since we're handling it automatically
+          className="hidden"
         >
           Set Timer
         </Button>
