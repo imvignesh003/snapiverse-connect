@@ -30,17 +30,8 @@ export const Timer = ({
   const [minutes, setMinutes] = useState<number>(initialMinutes || 25);
   const [seconds, setSeconds] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDialog, setShowDialog] = useState(showInput);
   const { toast } = useToast();
-
-  // Start timer automatically if initialMinutes is provided
-  useEffect(() => {
-    if (initialMinutes && timeLeft === null) {
-      const totalSeconds = initialMinutes * 60;
-      setTimeLeft(totalSeconds);
-      onTimeSet(initialMinutes);
-    }
-  }, [initialMinutes, timeLeft, onTimeSet]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;

@@ -78,7 +78,7 @@ export const ZoneSelector = ({ onZoneSelect }: ZoneSelectorProps) => {
                 onTimerEnd={handleTimerEnd} 
                 onTimeSet={handleTimeSet} 
                 showInput={true}
-                initialMinutes={25}
+                resetOnZoneSwitch={true}
               />
               <Button
                 variant="outline"
