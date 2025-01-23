@@ -18,6 +18,8 @@ interface TimerProps {
   resetOnZoneSwitch?: boolean;
   showInput?: boolean;
   initialMinutes?: number;
+  openDialog?: boolean;
+  onDialogClose?: () => void;
 }
 
 export const Timer = ({ 
@@ -26,19 +28,14 @@ export const Timer = ({
   isVisible = true, 
   resetOnZoneSwitch = false,
   showInput = false,
-  initialMinutes
+  initialMinutes,
+  openDialog = false,
+  onDialogClose
 }: TimerProps) => {
   const [minutes, setMinutes] = useState<number>(initialMinutes || 25);
   const [seconds, setSeconds] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
-  const [showDialog, setShowDialog] = useState(false);
   const { toast } = useToast();
-
-  useEffect(() => {
-    if (showInput && timeLeft === null) {
-      setShowDialog(true);
-    }
-  }, [showInput, timeLeft]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -58,7 +55,6 @@ export const Timer = ({
               setTimeLeft(null);
               setMinutes(25);
               setSeconds(0);
-              setShowDialog(true);
             }
             return 0;
           }
@@ -94,7 +90,7 @@ export const Timer = ({
     const totalSeconds = minutes * 60 + seconds;
     setTimeLeft(totalSeconds);
     onTimeSet(minutes);
-    setShowDialog(false);
+    onDialogClose?.();
   };
 
   const formatTime = (seconds: number): string => {
@@ -109,7 +105,7 @@ export const Timer = ({
 
   return (
     <>
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+      <Dialog open={openDialog} onOpenChange={onDialogClose}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Set Timer Duration</DialogTitle>
@@ -146,15 +142,7 @@ export const Timer = ({
         </DialogContent>
       </Dialog>
       
-      {timeLeft === null ? (
-        <Button 
-          onClick={() => setShowDialog(true)} 
-          size="sm"
-          className="hidden"
-        >
-          Set Timer
-        </Button>
-      ) : (
+      {timeLeft !== null && (
         <div className="font-mono text-lg font-bold text-center">
           {formatTime(timeLeft)}
         </div>
