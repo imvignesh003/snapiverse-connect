@@ -20,6 +20,7 @@ export type Database = {
           likes: number | null
           user_id: string
           zone: string
+          zones: string[] | null
         }
         Insert: {
           content: string
@@ -31,6 +32,7 @@ export type Database = {
           likes?: number | null
           user_id: string
           zone: string
+          zones?: string[] | null
         }
         Update: {
           content?: string
@@ -42,6 +44,7 @@ export type Database = {
           likes?: number | null
           user_id?: string
           zone?: string
+          zones?: string[] | null
         }
         Relationships: [
           {

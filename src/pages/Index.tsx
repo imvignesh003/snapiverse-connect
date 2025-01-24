@@ -16,6 +16,7 @@ interface PostData {
   zone?: Zone;
   custom_zone?: string;
   custom_tags?: string[];
+  zones?: string[];
 }
 
 const fetchPosts = async () => {
@@ -29,6 +30,7 @@ const fetchPosts = async () => {
       zone,
       custom_zone,
       custom_tags,
+      zones,
       profiles:user_id (
         username,
         avatar_url
@@ -48,6 +50,7 @@ const fetchPosts = async () => {
     zone: post.zone,
     custom_zone: post.custom_zone,
     custom_tags: post.custom_tags,
+    zones: post.zones
   }));
 };
 
@@ -88,7 +91,9 @@ const Index = () => {
     }
 
     const filtered = posts.filter(post => 
-      post.zone === selectedZone || post.custom_zone === selectedZone
+      post.zones?.includes(selectedZone) || 
+      post.zone === selectedZone || 
+      post.custom_zone === selectedZone
     );
     setFilteredPosts(filtered);
 
