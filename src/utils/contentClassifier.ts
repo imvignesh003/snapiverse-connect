@@ -1,7 +1,21 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export const classifyContent = async (text: string): Promise<{ zone: "productivity" | "entertainment", tags: string[] }> => {
+export const classifyContent = async (text: string, customZone?: string): Promise<{ zone: string, tags: string[] }> => {
   try {
+    if (customZone) {
+      // If a custom zone is provided, use it directly
+      const { data: tagsData, error: tagsError } = await supabase.functions.invoke('classify-content-gemini', {
+        body: { content: text }
+      });
+
+      if (tagsError) throw tagsError;
+
+      return {
+        zone: customZone,
+        tags: tagsData.tags || []
+      };
+    }
+
     // First, get AI-generated tags
     const { data: tagsData, error: tagsError } = await supabase.functions.invoke('classify-content-gemini', {
       body: { content: text }
@@ -17,7 +31,7 @@ export const classifyContent = async (text: string): Promise<{ zone: "productivi
     if (zoneError) throw zoneError;
 
     return {
-      zone: zoneData.classification as "productivity" | "entertainment",
+      zone: zoneData.classification as string,
       tags: tagsData.tags || []
     };
   } catch (error) {
@@ -51,7 +65,7 @@ export const classifyContent = async (text: string): Promise<{ zone: "productivi
       .filter(keyword => lowerText.includes(keyword.toLowerCase()));
 
     return {
-      zone: productivityScore >= entertainmentScore ? "productivity" : "entertainment",
+      zone: customZone || (productivityScore >= entertainmentScore ? "productivity" : "entertainment"),
       tags: matchedTags.slice(0, 5) // Limit to 5 tags for fallback
     };
   }

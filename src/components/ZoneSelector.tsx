@@ -7,10 +7,11 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Timer } from "./Timer";
 import { useToast } from "@/components/ui/use-toast";
 
-export type Zone = "productivity" | "entertainment";
+export type Zone = "productivity" | "entertainment" | string;
 
 interface ZoneSelectorProps {
   onZoneSelect: (zone: Zone) => void;
@@ -20,11 +21,25 @@ export const ZoneSelector = ({ onZoneSelect }: ZoneSelectorProps) => {
   const [open, setOpen] = useState(true);
   const [selectedZone, setSelectedZone] = useState<Zone | null>(null);
   const [showTimerDialog, setShowTimerDialog] = useState(false);
+  const [customZone, setCustomZone] = useState("");
+  const [showCustomInput, setShowCustomInput] = useState(false);
   const { toast } = useToast();
 
   const handleZoneSelect = (zone: Zone) => {
-    setSelectedZone(zone);
-    setShowTimerDialog(true);
+    if (zone === "custom") {
+      setShowCustomInput(true);
+    } else {
+      setSelectedZone(zone);
+      setShowTimerDialog(true);
+    }
+  };
+
+  const handleCustomZoneSubmit = () => {
+    if (customZone.trim()) {
+      setSelectedZone(customZone.trim());
+      setShowTimerDialog(true);
+      setShowCustomInput(false);
+    }
   };
 
   const handleTimerEnd = () => {
@@ -75,6 +90,31 @@ export const ZoneSelector = ({ onZoneSelect }: ZoneSelectorProps) => {
             >
               Entertainment Zone
             </Button>
+            <Button
+              className="bg-green-600 hover:bg-green-700"
+              onClick={() => handleZoneSelect("custom")}
+            >
+              Custom Zone
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showCustomInput} onOpenChange={setShowCustomInput}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Create Custom Zone</DialogTitle>
+            <DialogDescription>
+              Enter a name for your custom zone
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-4">
+            <Input
+              placeholder="Enter zone name..."
+              value={customZone}
+              onChange={(e) => setCustomZone(e.target.value)}
+            />
+            <Button onClick={handleCustomZoneSubmit}>Create Zone</Button>
           </div>
         </DialogContent>
       </Dialog>

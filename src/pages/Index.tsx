@@ -13,7 +13,8 @@ interface PostData {
   image: string;
   likes: number;
   caption: string;
-  zone?: "productivity" | "entertainment";
+  zone?: Zone;
+  custom_zone?: string;
   custom_tags?: string[];
 }
 
@@ -26,6 +27,7 @@ const fetchPosts = async () => {
       image_url,
       likes,
       zone,
+      custom_zone,
       custom_tags,
       profiles:user_id (
         username,
@@ -44,6 +46,7 @@ const fetchPosts = async () => {
     likes: post.likes,
     caption: post.content,
     zone: post.zone,
+    custom_zone: post.custom_zone,
     custom_tags: post.custom_tags,
   }));
 };
@@ -84,7 +87,9 @@ const Index = () => {
       return;
     }
 
-    const filtered = posts.filter(post => post.zone === selectedZone);
+    const filtered = posts.filter(post => 
+      post.zone === selectedZone || post.custom_zone === selectedZone
+    );
     setFilteredPosts(filtered);
 
     toast({

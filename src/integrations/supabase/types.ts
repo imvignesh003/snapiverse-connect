@@ -14,6 +14,7 @@ export type Database = {
           content: string
           created_at: string
           custom_tags: string[] | null
+          custom_zone: string | null
           id: string
           image_url: string
           likes: number | null
@@ -24,6 +25,7 @@ export type Database = {
           content: string
           created_at?: string
           custom_tags?: string[] | null
+          custom_zone?: string | null
           id?: string
           image_url: string
           likes?: number | null
@@ -34,6 +36,7 @@ export type Database = {
           content?: string
           created_at?: string
           custom_tags?: string[] | null
+          custom_zone?: string | null
           id?: string
           image_url?: string
           likes?: number | null
