@@ -22,9 +22,16 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
 
   const handleTimeSet = (minutes: number) => {
     toast({
-      title: `${currentZone?.charAt(0).toUpperCase() + currentZone?.slice(1)} Zone Timer Set`,
+      title: `${currentZone ? currentZone.charAt(0).toUpperCase() + currentZone.slice(1) : 'Current'} Zone Timer Set`,
       description: `Timer set for ${minutes} minutes.`,
     });
+  };
+
+  const getNextZoneName = () => {
+    if (!currentZone) return '';
+    if (currentZone === 'productivity') return 'Entertainment';
+    if (currentZone === 'entertainment') return 'Productivity';
+    return 'Productivity'; // Default for custom zones
   };
 
   return (
@@ -53,7 +60,7 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
                 className="flex items-center gap-2"
               >
                 <Repeat className="w-4 h-4" />
-                Switch to {currentZone === 'productivity' ? 'Entertainment' : 'Productivity'}
+                Switch to {getNextZoneName()}
               </Button>
             )}
           </div>

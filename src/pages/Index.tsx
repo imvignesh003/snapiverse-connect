@@ -90,11 +90,15 @@ const Index = () => {
       return;
     }
 
-    const filtered = posts.filter(post => 
-      post.zones?.includes(selectedZone) || 
-      post.zone === selectedZone || 
-      post.custom_zone === selectedZone
-    );
+    const filtered = posts.filter(post => {
+      // Check if post matches the selected zone in any way
+      return (
+        post.zones?.includes(selectedZone) || 
+        post.zone === selectedZone || 
+        post.custom_zone?.toLowerCase() === selectedZone.toLowerCase()
+      );
+    });
+    
     setFilteredPosts(filtered);
 
     toast({
