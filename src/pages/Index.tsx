@@ -14,6 +14,7 @@ interface PostData {
   likes: number;
   caption: string;
   zone?: "productivity" | "entertainment";
+  custom_tags?: string[];
 }
 
 const fetchPosts = async () => {
@@ -25,6 +26,7 @@ const fetchPosts = async () => {
       image_url,
       likes,
       zone,
+      custom_tags,
       profiles:user_id (
         username,
         avatar_url
@@ -42,6 +44,7 @@ const fetchPosts = async () => {
     likes: post.likes,
     caption: post.content,
     zone: post.zone,
+    custom_tags: post.custom_tags,
   }));
 };
 
@@ -51,15 +54,13 @@ const Index = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Enhanced query with proper caching
   const { data: posts, isLoading } = useQuery({
     queryKey: ['posts'],
     queryFn: fetchPosts,
-    staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
-    gcTime: 10 * 60 * 1000, // Keep unused data in cache for 10 minutes
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 
-  // Real-time updates with cache integration
   useEffect(() => {
     const channel = supabase
       .channel('posts-changes')
@@ -67,7 +68,6 @@ const Index = () => {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'posts' },
         (payload) => {
-          // Invalidate and refetch cache when data changes
           queryClient.invalidateQueries({ queryKey: ['posts'] });
         }
       )

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Heart } from "lucide-react";
+import { Heart, Tag } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface PostProps {
   username: string;
@@ -7,9 +8,10 @@ interface PostProps {
   image: string;
   likes: number;
   caption: string;
+  custom_tags?: string[];
 }
 
-export const Post = ({ username, userImage, image, likes: initialLikes, caption }: PostProps) => {
+export const Post = ({ username, userImage, image, likes: initialLikes, caption, custom_tags = [] }: PostProps) => {
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(initialLikes);
 
@@ -46,10 +48,20 @@ export const Post = ({ username, userImage, image, likes: initialLikes, caption 
         <div className="flex items-center mb-2">
           <span className="font-semibold">{likes} likes</span>
         </div>
-        <p>
+        <p className="mb-2">
           <span className="font-semibold mr-2">{username}</span>
           {caption}
         </p>
+        {custom_tags && custom_tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            <Tag className="w-4 h-4 text-gray-500" />
+            {custom_tags.map((tag, index) => (
+              <Badge key={index} variant="secondary" className="text-xs">
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

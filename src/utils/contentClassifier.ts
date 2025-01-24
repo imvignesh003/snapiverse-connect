@@ -1,14 +1,25 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export const classifyContent = async (text: string): Promise<"productivity" | "entertainment"> => {
+export const classifyContent = async (text: string): Promise<{ zone: "productivity" | "entertainment", tags: string[] }> => {
   try {
-    const { data, error } = await supabase.functions.invoke('classify-content', {
+    // First, get AI-generated tags
+    const { data: tagsData, error: tagsError } = await supabase.functions.invoke('classify-content-gemini', {
       body: { content: text }
     });
 
-    if (error) throw error;
+    if (tagsError) throw tagsError;
+    
+    // Then get zone classification
+    const { data: zoneData, error: zoneError } = await supabase.functions.invoke('classify-content', {
+      body: { content: text }
+    });
 
-    return data.classification as "productivity" | "entertainment";
+    if (zoneError) throw zoneError;
+
+    return {
+      zone: zoneData.classification as "productivity" | "entertainment",
+      tags: tagsData.tags || []
+    };
   } catch (error) {
     console.error('Classification error:', error);
     
@@ -35,6 +46,13 @@ export const classifyContent = async (text: string): Promise<"productivity" | "e
       lowerText.includes(keyword.toLowerCase())
     ).length;
 
-    return productivityScore >= entertainmentScore ? "productivity" : "entertainment";
+    // Generate basic tags from matched keywords
+    const matchedTags = [...productivityKeywords, ...entertainmentKeywords]
+      .filter(keyword => lowerText.includes(keyword.toLowerCase()));
+
+    return {
+      zone: productivityScore >= entertainmentScore ? "productivity" : "entertainment",
+      tags: matchedTags.slice(0, 5) // Limit to 5 tags for fallback
+    };
   }
 };
