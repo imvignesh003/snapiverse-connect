@@ -35,17 +35,17 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
         </Link>
         
         <div className="flex items-center gap-6">
-          {currentZone && (
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 min-w-[200px] justify-center bg-gray-100 px-3 py-1 rounded">
-                <Timer 
-                  onTimerEnd={handleZoneSwitch} 
-                  onTimeSet={handleTimeSet}
-                  isVisible={true}
-                  resetOnZoneSwitch={true}
-                  showInput={true}
-                />
-              </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 min-w-[200px] justify-center bg-gray-100 px-3 py-1 rounded">
+              <Timer 
+                onTimerEnd={handleZoneSwitch} 
+                onTimeSet={handleTimeSet}
+                isVisible={true}
+                resetOnZoneSwitch={true}
+                showInput={true}
+              />
+            </div>
+            {currentZone && (
               <Button
                 variant="outline"
                 size="sm"
@@ -55,8 +55,8 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
                 <Repeat className="w-4 h-4" />
                 Switch to {currentZone === 'productivity' ? 'Entertainment' : 'Productivity'}
               </Button>
-            </div>
-          )}
+            )}
+          </div>
           
           <nav className="flex items-center space-x-6">
             <Link to="/" className="hover:text-instagram-primary transition-colors">
