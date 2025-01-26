@@ -50,7 +50,7 @@ const fetchPosts = async () => {
     zone: post.zone,
     custom_zone: post.custom_zone,
     custom_tags: post.custom_tags,
-    zones: post.zones
+    zones: post.zones || []
   }));
 };
 
@@ -90,19 +90,32 @@ const Index = () => {
       return;
     }
 
+    console.log('Filtering posts for zone:', selectedZone);
+    console.log('Available posts:', posts);
+
     const filtered = posts.filter(post => {
       const normalizedSelectedZone = selectedZone.toLowerCase();
       const normalizedCustomZone = post.custom_zone?.toLowerCase() || '';
       const normalizedZones = post.zones?.map(z => z.toLowerCase()) || [];
-      const normalizedZone = post.zone?.toLowerCase();
+      const normalizedZone = post.zone?.toLowerCase() || '';
       
-      return (
-        normalizedZones.includes(normalizedSelectedZone) ||
-        normalizedZone === normalizedSelectedZone ||
-        normalizedCustomZone === normalizedSelectedZone
-      );
+      const isInZone = normalizedZones.includes(normalizedSelectedZone) ||
+                      normalizedZone === normalizedSelectedZone ||
+                      normalizedCustomZone === normalizedSelectedZone;
+      
+      console.log('Post zones:', {
+        postId: post.id,
+        zones: normalizedZones,
+        zone: normalizedZone,
+        customZone: normalizedCustomZone,
+        selectedZone: normalizedSelectedZone,
+        isIncluded: isInZone
+      });
+      
+      return isInZone;
     });
     
+    console.log('Filtered posts:', filtered);
     setFilteredPosts(filtered);
 
     const zoneDisplay = selectedZone.charAt(0).toUpperCase() + selectedZone.slice(1);
@@ -141,7 +154,7 @@ const Index = () => {
             filteredPosts.map((post) => <Post key={post.id} {...post} />)
           ) : (
             <div className="text-center text-gray-500 mt-8">
-              <p className="text-lg font-medium mb-2">No posts found in this zone</p>
+              <p className="text-lg font-medium mb-2">No posts found in {selectedZone} zone</p>
               <p>Try selecting a different zone or check back later</p>
             </div>
           )
