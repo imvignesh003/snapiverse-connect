@@ -93,19 +93,22 @@ const Index = () => {
     const filtered = posts.filter(post => {
       const normalizedSelectedZone = selectedZone.toLowerCase();
       const normalizedCustomZone = post.custom_zone?.toLowerCase() || '';
+      const normalizedZones = post.zones?.map(z => z.toLowerCase()) || [];
+      const normalizedZone = post.zone?.toLowerCase();
       
       return (
-        post.zones?.includes(normalizedSelectedZone) ||
-        post.zone?.toLowerCase() === normalizedSelectedZone ||
+        normalizedZones.includes(normalizedSelectedZone) ||
+        normalizedZone === normalizedSelectedZone ||
         normalizedCustomZone === normalizedSelectedZone
       );
     });
     
     setFilteredPosts(filtered);
 
+    const zoneDisplay = selectedZone.charAt(0).toUpperCase() + selectedZone.slice(1);
     toast({
-      title: `${selectedZone.charAt(0).toUpperCase() + selectedZone.slice(1)} Zone`,
-      description: `Content has been filtered based on your selection.`,
+      title: `${zoneDisplay} Zone`,
+      description: `Showing posts from ${zoneDisplay} zone`,
     });
   }, [selectedZone, posts, toast]);
 
