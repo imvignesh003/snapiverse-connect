@@ -58,6 +58,7 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
                 isVisible={true}
                 resetOnZoneSwitch={true}
                 initialMinutes={25}
+                showInput={false}
               />
             </div>
             <Button
