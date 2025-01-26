@@ -16,7 +16,15 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
   const handleZoneSwitch = () => {
     if (!currentZone || !onZoneSwitch) return;
     
-    const newZone = currentZone === 'productivity' ? 'entertainment' : 'productivity';
+    let newZone: Zone;
+    if (currentZone === 'productivity') {
+      newZone = 'entertainment';
+    } else if (currentZone === 'entertainment') {
+      newZone = 'productivity';
+    } else {
+      // For custom zones, switch back to productivity
+      newZone = 'productivity';
+    }
     onZoneSwitch(newZone);
   };
 
@@ -28,7 +36,7 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
   };
 
   const getNextZoneName = () => {
-    if (!currentZone) return '';
+    if (!currentZone) return 'Productivity';
     if (currentZone === 'productivity') return 'Entertainment';
     if (currentZone === 'entertainment') return 'Productivity';
     return 'Productivity'; // Default for custom zones
@@ -52,17 +60,15 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
                 showInput={true}
               />
             </div>
-            {currentZone && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleZoneSwitch}
-                className="flex items-center gap-2"
-              >
-                <Repeat className="w-4 h-4" />
-                Switch to {getNextZoneName()}
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleZoneSwitch}
+              className="flex items-center gap-2"
+            >
+              <Repeat className="w-4 h-4" />
+              Switch to {getNextZoneName()}
+            </Button>
           </div>
           
           <nav className="flex items-center space-x-6">

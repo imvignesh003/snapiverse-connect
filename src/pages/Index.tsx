@@ -60,7 +60,7 @@ const Index = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: posts, isLoading } = useQuery({
+  const { data: posts, isLoading, error } = useQuery({
     queryKey: ['posts'],
     queryFn: fetchPosts,
     staleTime: 5 * 60 * 1000,
@@ -73,7 +73,7 @@ const Index = () => {
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'posts' },
-        (payload) => {
+        () => {
           queryClient.invalidateQueries({ queryKey: ['posts'] });
         }
       )
@@ -91,11 +91,13 @@ const Index = () => {
     }
 
     const filtered = posts.filter(post => {
-      // Check if post matches the selected zone in any way
+      const normalizedSelectedZone = selectedZone.toLowerCase();
+      const normalizedCustomZone = post.custom_zone?.toLowerCase() || '';
+      
       return (
-        post.zones?.includes(selectedZone) || 
-        post.zone === selectedZone || 
-        post.custom_zone?.toLowerCase() === selectedZone.toLowerCase()
+        post.zones?.includes(normalizedSelectedZone) ||
+        post.zone?.toLowerCase() === normalizedSelectedZone ||
+        normalizedCustomZone === normalizedSelectedZone
       );
     });
     
@@ -103,9 +105,20 @@ const Index = () => {
 
     toast({
       title: `${selectedZone.charAt(0).toUpperCase() + selectedZone.slice(1)} Zone`,
-      description: "Content has been filtered based on your selection.",
+      description: `Content has been filtered based on your selection.`,
     });
   }, [selectedZone, posts, toast]);
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center text-red-500">
+          <h2 className="text-xl font-semibold mb-2">Error Loading Posts</h2>
+          <p>Please try refreshing the page</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -114,19 +127,25 @@ const Index = () => {
       <main className="container mx-auto px-4 pt-24 pb-8 max-w-[600px]">
         {isLoading ? (
           <div className="text-center text-gray-500 mt-8">
-            Loading posts...
+            <div className="animate-pulse space-y-4">
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="bg-white h-96 rounded-lg"></div>
+              ))}
+            </div>
           </div>
         ) : selectedZone ? (
           filteredPosts.length > 0 ? (
             filteredPosts.map((post) => <Post key={post.id} {...post} />)
           ) : (
             <div className="text-center text-gray-500 mt-8">
-              No posts found in this zone.
+              <p className="text-lg font-medium mb-2">No posts found in this zone</p>
+              <p>Try selecting a different zone or check back later</p>
             </div>
           )
         ) : (
           <div className="text-center text-gray-500 mt-8">
-            Please select a zone to view content.
+            <p className="text-lg font-medium mb-2">Welcome to Zone-Based Content</p>
+            <p>Please select a zone to view relevant content</p>
           </div>
         )}
       </main>
