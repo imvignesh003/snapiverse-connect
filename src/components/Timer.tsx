@@ -28,45 +28,49 @@ export const Timer = ({
   isVisible = true, 
   resetOnZoneSwitch = false,
   showInput = false,
-  initialMinutes,
+  initialMinutes = 25,
   openDialog = false,
   onDialogClose
 }: TimerProps) => {
-  const [minutes, setMinutes] = useState<number>(initialMinutes || 25);
+  const [minutes, setMinutes] = useState<number>(initialMinutes);
   const [seconds, setSeconds] = useState<number>(0);
-  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [timeLeft, setTimeLeft] = useState<number>(initialMinutes * 60);
   const { toast } = useToast();
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    if (!isVisible) return;
     
-    if (timeLeft !== null) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev === null) return null;
-          if (prev <= 1) {
-            clearInterval(timer);
-            toast({
-              title: "Time's up!",
-              description: "Switching to the other zone.",
-            });
-            onTimerEnd();
-            if (resetOnZoneSwitch) {
-              setTimeLeft(null);
-              setMinutes(25);
-              setSeconds(0);
-            }
-            return 0;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          toast({
+            title: "Time's up!",
+            description: "Switching to the other zone.",
+          });
+          onTimerEnd();
+          if (resetOnZoneSwitch) {
+            setMinutes(initialMinutes);
+            setSeconds(0);
+            return initialMinutes * 60;
           }
-          return prev - 1;
-        });
-      }, 1000);
-    }
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [timeLeft, onTimerEnd, toast, resetOnZoneSwitch]);
+  }, [timeLeft, onTimerEnd, toast, resetOnZoneSwitch, isVisible, initialMinutes]);
+
+  useEffect(() => {
+    // Start timer automatically when component mounts
+    if (isVisible && !timeLeft) {
+      setTimeLeft(initialMinutes * 60);
+    }
+  }, [isVisible, initialMinutes]);
 
   const handleStartTimer = () => {
     if (minutes < 0 || seconds < 0 || seconds >= 60) {
@@ -142,11 +146,9 @@ export const Timer = ({
         </DialogContent>
       </Dialog>
       
-      {timeLeft !== null && (
-        <div className="font-mono text-lg font-bold text-center">
-          {formatTime(timeLeft)}
-        </div>
-      )}
+      <div className="font-mono text-lg font-bold text-center">
+        {formatTime(timeLeft)}
+      </div>
     </>
   );
 };

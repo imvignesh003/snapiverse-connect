@@ -22,7 +22,6 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
     } else if (currentZone === 'entertainment') {
       newZone = 'productivity';
     } else {
-      // For custom zones, switch back to productivity
       newZone = 'productivity';
     }
     onZoneSwitch(newZone);
@@ -39,7 +38,7 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
     if (!currentZone) return 'Productivity';
     if (currentZone === 'productivity') return 'Entertainment';
     if (currentZone === 'entertainment') return 'Productivity';
-    return 'Productivity'; // Default for custom zones
+    return 'Productivity';
   };
 
   return (
@@ -59,6 +58,7 @@ export const Header = ({ currentZone, onZoneSwitch }: HeaderProps) => {
                 resetOnZoneSwitch={true}
                 initialMinutes={25}
                 showInput={false}
+                openDialog={false}
               />
             </div>
             <Button
